@@ -1,1 +1,145 @@
 @import url("gold.css") layer(gold);
+@import url("champions.css") layer(champions);
+
+:root {
+    --blue-text: #A2C5C5;
+    --blue-bg: #1E252A;
+    --blue-down: #00618D;
+    --blue-up: #06D9C8;
+    --text-dark: #929383;
+    --yellow-border: #FFDE6B;
+    --green-blue: #072C25;
+    --green-green: #204A36;
+    --green-but-a-bit-less-green: #2E4E3B;
+    --somehow-also-green: #316140;
+    --and-a-red-touch: #b72424;
+}
+
+@view-transition { navigation: auto; }
+
+body {
+    background: linear-gradient(to bottom, var(--blue-bg), transparent);
+    color: var(--text-dark);
+    min-height: 100dvh;
+}
+
+article {
+    display: flex;
+    align-items: center;
+    img {
+        width: 1rem;
+    }
+}
+
+/* DRAFTS */
+
+
+
+#wrapper {
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    gap: 2rem;
+}
+
+#blue-side, #red-side {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    gap: 4px;
+    background: lightblue;
+    color: white;
+    border-radius: .2rem;
+}
+
+#blue-side {
+    outline: solid 5px var(--blue-down)
+}
+#red-side {
+    outline: solid 5px var(--and-a-red-touch)
+}
+
+#picker {
+    display: grid;
+    grid-template-rows: 1rem 1fr;
+    gap: .5rem;
+    align-items: start;
+    transition: .2s linear;
+}
+
+#roles {
+    display: grid;
+    grid-template-columns: repeat(5, 1rem) 1fr 5rem;
+    gap: .1rem;
+}
+
+#roles input {
+    color: var(--blue-text);
+    font-size: .6rem;
+    padding-inline: .4rem;
+    border-radius: .5rem;
+}
+
+#roles img {
+    height: 1rem;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+}
+
+#roles img:hover:not([selected]) {
+    filter: drop-shadow(0px 0px 4px var(--blue-down));
+}
+
+#legends {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    max-height: 50dvh;
+    width: max-content;
+    overflow-y: scroll;
+    scrollbar-width: none;
+
+}
+
+[role="tooltip"] {
+    font-size: 60%;
+    font-weight: bold;
+    visibility: hidden;
+    place-self: anchor-center;
+    background-color: white;
+    border: 2px solid var(--blue-text);
+    border-radius: 2rem;
+    padding-inline: .2rem;
+    filter: drop-shadow(0px 0px 2px white);
+    width: max-content;
+    opacity: .8;
+    pointer-events: none;
+}
+
+[aria-describedby]:hover > [role="tooltip"] {
+    visibility: visible;
+}
+
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    border: 10px solid;
+    box-sizing: border-box;
+    animation: animloader 1s linear infinite alternate;
+}
+@keyframes animloader {
+    0% {
+    border-color: white rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+    }
+    33% {
+    border-color: white white rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+    }
+    66% {
+    border-color: white white white rgba(255, 255, 255, 0);
+    }
+    100% {
+    border-color: white white white white;
+    }
+} 
