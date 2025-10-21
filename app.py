@@ -101,13 +101,14 @@ async def draft(request, draft_id):
 @app.get("/d/<draft_id>/draft_updates")
 @datastar_response
 async def draft_updates(request, draft_id):
+    user_id = request.cookies.get('user_id')
     pubsub = app.ctx.redis_client.pubsub()
     channel = f"draft:{draft_id}"
     await pubsub.subscribe(channel)
     try:
         async for msg in pubsub.listen():
             print(datetime.now(), msg)
-            response_html = await draft_page(draft_id)
+            response_html = await draft_page(draft_id, user_id)
             yield SSE.patch_elements(response_html)
     except asyncio.CancelledError:
         raise
@@ -117,19 +118,27 @@ async def draft_updates(request, draft_id):
 
 @app.post("/d/<draft_id>")
 @datastar_response
-async def pick_champ(request, draft_id):
+async def da_post_route(request, draft_id):
+    vote = request.args.get("vote")
     champ = request.args.get("pick")
     draft = Draft.get(Draft.id == draft_id)
-    if draft.current_move == 10:
-        return
-    key = move_order.get(draft.current_move)
-    setattr(draft, key, champ)
-    draft.current_move += 1
-    draft.save()
-    if draft.current_move == 10:
-        await app.ctx.redis_client.publish("main", "rugpull")
-    await app.ctx.redis_client.publish(f"draft:{draft_id}", "rugpull")
-    return 
+    match vote, champ:
+        case _, None:
+            draft.votes_blue += 1
+            await app.ctx.redis_client.publish("main", "rugpull")
+        case None, _:
+            if draft.current_move == 20:
+                return
+            key = move_order.get(draft.current_move)
+            setattr(draft, key, champ)
+            draft.current_move += 1
+            draft.save()
+            if draft.current_move == 20:
+                await app.ctx.redis_client.publish("main", "rugpull")
+            await app.ctx.redis_client.publish(f"draft:{draft_id}", "rugpull")
+        case _:
+            return
+
 
 if __name__ == "__main__":
     app.run(debug=True, auto_reload=True, access_log=False)

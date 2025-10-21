@@ -6,7 +6,7 @@ class Draft(Model):
     created = DateTimeField(default=datetime.now)
     red = UUIDField()
     blue = UUIDField()
-    # pre_bans = SmallIntegerField()
+    
     current_move = SmallIntegerField(default=0)
     r1b = SmallIntegerField(null=True)
     b1b = SmallIntegerField(null=True)
@@ -29,5 +29,5 @@ class Draft(Model):
     b5p = SmallIntegerField(null=True)
     r5p = SmallIntegerField(null=True)
 
-    votes_red = SmallIntegerField(default=0)
-    votes_blue = SmallIntegerField(default=0)
+    votes_blue = SmallIntegerField(default=1)
+    votes_red = SmallIntegerField(default=1)

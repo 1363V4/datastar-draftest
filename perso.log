@@ -1,0 +1,240 @@
+INFO:sanic.root:
+  ┌────────────────────────────────────────────────────────────────┐
+  │                         Sanic v25.3.0                          │
+  │               Goin' Fast @ http://127.0.0.1:8000               │
+  ├───────────────────────┬────────────────────────────────────────┤
+  │ [48;2;255;13;104m                     [0m │         app: __main__                  │
+  │ [38;2;255;255;255;48;2;255;13;104m    ▄███ █████ ██    [0m │        mode: debug, single worker      │
+  │ [38;2;255;255;255;48;2;255;13;104m   ██                [0m │      server: sanic, HTTP/1.1           │
+  │ [38;2;255;255;255;48;2;255;13;104m    ▀███████ ███▄    [0m │      python: 3.12.10                   │
+  │ [38;2;255;255;255;48;2;255;13;104m                ██   [0m │    platform: Windows-11-10.0.22631-SP0 │
+  │ [38;2;255;255;255;48;2;255;13;104m   ████ ████████▀    [0m │ auto-reload: enabled                   │
+  │ [48;2;255;13;104m                     [0m │    packages: sanic-routing==23.12.0    │
+  │ Build Fast. Run Fast. │                                        │
+  └───────────────────────┴────────────────────────────────────────┘
+
+DEBUG:asyncio:Using selector: SelectSelector
+[34mDEBUG[0m:sanic.root:Creating multiprocessing context using 'spawn'
+[34mDEBUG[0m:sanic.root:[34mStarting a process: [1m[38;2;255;13;104mSanic-Server-0-0[0m
+[34mDEBUG[0m:sanic.root:[34mStarting a process: [1m[38;2;255;13;104mSanic-Reloader-0[0m
+DEBUG:asyncio:Using selector: SelectSelector
+DEBUG:peewee:('BEGIN', None)
+DEBUG:peewee:('CREATE TABLE IF NOT EXISTS "draft" ("id" INTEGER NOT NULL PRIMARY KEY, "created" DATETIME NOT NULL, "red" TEXT NOT NULL, "blue" TEXT NOT NULL, "current_move" INTEGER NOT NULL, "r1b" INTEGER, "b1b" INTEGER, "b2b" INTEGER, "r2b" INTEGER, "r3b" INTEGER, "b3b" INTEGER, "b1p" INTEGER, "r1p" INTEGER, "r2p" INTEGER, "b2p" INTEGER, "b3p" INTEGER, "r3p" INTEGER, "r4b" INTEGER, "b4b" INTEGER, "b5b" INTEGER, "r5b" INTEGER, "r4p" INTEGER, "b4p" INTEGER, "b5p" INTEGER, "r5p" INTEGER, "votes_red" INTEGER NOT NULL, "votes_blue" INTEGER NOT NULL)', [])
+[34mDEBUG[0m:sanic.root:[34mProcess ack: [1m[38;2;255;13;104mSanic-Server-0-0 [34m[18348][0m
+DEBUG:asyncio:Using proactor: IocpProactor
+INFO:asyncio:<Server sockets=(<asyncio.TransportSocket fd=968, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> is serving
+INFO:sanic.server:Starting worker [18348]
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=968, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 51903): <socket.socket fd=848, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51903)>
+WARNING:asyncio:Executing <Task pending name='Task-7' coro=<HttpProtocol.connection_task() running at C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\sanic\server\protocols\http_protocol.py:160> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py:448> created at C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\sanic\server\protocols\http_protocol.py:299> took 0.281 seconds
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=968, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 54792): <socket.socket fd=776, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 54792)>
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=968, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 59267): <socket.socket fd=804, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 59267)>
+DEBUG:asyncio:Get address info localhost:6379, type=<SocketKind.SOCK_STREAM: 1>
+DEBUG:asyncio:Getting address info localhost:6379, type=<SocketKind.SOCK_STREAM: 1> took 47.000ms: [(<AddressFamily.AF_INET6: 23>, <SocketKind.SOCK_STREAM: 1>, 0, '', ('::1', 6379, 0, 0)), (<AddressFamily.AF_INET: 2>, <SocketKind.SOCK_STREAM: 1>, 0, '', ('127.0.0.1', 6379))]
+[31mERROR[0m:sanic.error:Exception occurred while handling uri: 'http://127.0.0.1:8000/home_updates?datastar=%7B%7D'
+Traceback (most recent call last):
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m305[0m, in [34m[1mconnect_check_health[0m
+[33m    await self.retry.call_with_retry([0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\retry.py", line [36m[1m50[0m, in [34m[1mcall_with_retry[0m
+[33m    return await do()[0m
+[33m           ^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m760[0m, in [34m[1m_connect[0m
+[33m    reader, writer = await asyncio.open_connection([0m
+[33m                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\streams.py", line [36m[1m48[0m, in [34m[1mopen_connection[0m
+[33m    transport, _ = await loop.create_connection([0m
+[33m                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line [36m[1m1140[0m, in [34m[1mcreate_connection[0m
+[33m    raise OSError('Multiple exceptions: {}'.format([0m
+[38;2;255;13;104m[1mOSError[0m: [1mMultiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379)[0m
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\sanic\app.py", line [36m[1m1381[0m, in [34m[1mhandle_request[0m
+[33m    response = await response[0m
+[33m               ^^^^^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\datastar_py\sanic.py", line [36m[1m81[0m, in [34m[1mwrapper[0m
+[33m    async for event in ait:[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\app.py", line [36m[1m56[0m, in [34m[1mhome_updates[0m
+[33m    await pubsub.subscribe("main")[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\client.py", line [36m[1m1071[0m, in [34m[1msubscribe[0m
+[33m    ret_val = await self.execute_command("SUBSCRIBE", *new_channels.keys())[0m
+[33m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\client.py", line [36m[1m924[0m, in [34m[1mexecute_command[0m
+[33m    await self.connect()[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\client.py", line [36m[1m934[0m, in [34m[1mconnect[0m
+[33m    self.connection = await self.connection_pool.get_connection()[0m
+[33m                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m1149[0m, in [34m[1mget_connection[0m
+[33m    await self.ensure_connection(connection)[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m1182[0m, in [34m[1mensure_connection[0m
+[33m    await connection.connect()[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m296[0m, in [34m[1mconnect[0m
+[33m    await self.connect_check_health(check_health=True)[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m315[0m, in [34m[1mconnect_check_health[0m
+[33m    raise ConnectionError(self._error_message(e))[0m
+[38;2;255;13;104m[1mredis.exceptions.ConnectionError[0m: [1mError Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.[0m
+[34mDEBUG[0m:sanic.root:Error Page: The client accepts application/json, using 'json' from request.accept
+DEBUG:peewee:('INSERT INTO "draft" ("created", "red", "blue", "current_move", "votes_red", "votes_blue") VALUES (?, ?, ?, ?, ?, ?)', [datetime.datetime(2025, 10, 20, 11, 25, 17, 969126), 'a979bd866214411d81605818c78a5261', 'a979bd866214411d81605818c78a5261', 0, 0, 0])
+DEBUG:asyncio:<_SelectorSocketTransport fd=776 read=polling write=<idle, bufsize=0>> received EOF
+DEBUG:asyncio:<_SelectorSocketTransport fd=848 read=polling write=<idle, bufsize=0>> received EOF
+DEBUG:asyncio:<_SelectorSocketTransport fd=804 read=polling write=<idle, bufsize=0>> received EOF
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=968, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 61580): <socket.socket fd=804, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 61580)>
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=968, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 56183): <socket.socket fd=924, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 56183)>
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=968, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 55338): <socket.socket fd=744, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 55338)>
+DEBUG:asyncio:Get address info localhost:6379, type=<SocketKind.SOCK_STREAM: 1>
+DEBUG:asyncio:Getting address info localhost:6379, type=<SocketKind.SOCK_STREAM: 1> took 0.000ms: [(<AddressFamily.AF_INET6: 23>, <SocketKind.SOCK_STREAM: 1>, 0, '', ('::1', 6379, 0, 0)), (<AddressFamily.AF_INET: 2>, <SocketKind.SOCK_STREAM: 1>, 0, '', ('127.0.0.1', 6379))]
+DEBUG:asyncio:<_SelectorSocketTransport fd=924 read=polling write=<idle, bufsize=0>> received EOF
+[34mDEBUG[0m:sanic.root:Error Page: The client accepts application/json, using 'json' from request.accept
+DEBUG:asyncio:<_SelectorSocketTransport fd=804 read=polling write=<idle, bufsize=0>> received EOF
+DEBUG:asyncio:<_SelectorSocketTransport fd=744 read=polling write=<idle, bufsize=0>> received EOF
+INFO:sanic.root:Received signal SIGINT. Shutting down.
+[34mDEBUG[0m:sanic.root:[34mTerminating a process: [1m[38;2;255;13;104mSanic-Server-0-0 [34m[18348][0m
+[34mDEBUG[0m:sanic.root:[34mTerminating a process: [1m[38;2;255;13;104mSanic-Reloader-0 [34m[13300][0m
+INFO:sanic.root:Server Stopped
+[34mDEBUG[0m:sanic.root:Goodbye
+INFO:sanic.root:
+  ┌────────────────────────────────────────────────────────────────┐
+  │                         Sanic v25.3.0                          │
+  │               Goin' Fast @ http://127.0.0.1:8000               │
+  ├───────────────────────┬────────────────────────────────────────┤
+  │ [48;2;255;13;104m                     [0m │         app: __main__                  │
+  │ [38;2;255;255;255;48;2;255;13;104m    ▄███ █████ ██    [0m │        mode: debug, single worker      │
+  │ [38;2;255;255;255;48;2;255;13;104m   ██                [0m │      server: sanic, HTTP/1.1           │
+  │ [38;2;255;255;255;48;2;255;13;104m    ▀███████ ███▄    [0m │      python: 3.12.10                   │
+  │ [38;2;255;255;255;48;2;255;13;104m                ██   [0m │    platform: Windows-11-10.0.22631-SP0 │
+  │ [38;2;255;255;255;48;2;255;13;104m   ████ ████████▀    [0m │ auto-reload: enabled                   │
+  │ [48;2;255;13;104m                     [0m │    packages: sanic-routing==23.12.0    │
+  │ Build Fast. Run Fast. │                                        │
+  └───────────────────────┴────────────────────────────────────────┘
+
+DEBUG:asyncio:Using selector: SelectSelector
+[34mDEBUG[0m:sanic.root:Creating multiprocessing context using 'spawn'
+[34mDEBUG[0m:sanic.root:[34mStarting a process: [1m[38;2;255;13;104mSanic-Server-0-0[0m
+[34mDEBUG[0m:sanic.root:[34mStarting a process: [1m[38;2;255;13;104mSanic-Reloader-0[0m
+DEBUG:asyncio:Using selector: SelectSelector
+DEBUG:peewee:('BEGIN', None)
+DEBUG:peewee:('CREATE TABLE IF NOT EXISTS "draft" ("id" INTEGER NOT NULL PRIMARY KEY, "created" DATETIME NOT NULL, "red" TEXT NOT NULL, "blue" TEXT NOT NULL, "current_move" INTEGER NOT NULL, "r1b" INTEGER, "b1b" INTEGER, "b2b" INTEGER, "r2b" INTEGER, "r3b" INTEGER, "b3b" INTEGER, "b1p" INTEGER, "r1p" INTEGER, "r2p" INTEGER, "b2p" INTEGER, "b3p" INTEGER, "r3p" INTEGER, "r4b" INTEGER, "b4b" INTEGER, "b5b" INTEGER, "r5b" INTEGER, "r4p" INTEGER, "b4p" INTEGER, "b5p" INTEGER, "r5p" INTEGER, "votes_blue" INTEGER NOT NULL, "votes_red" INTEGER NOT NULL)', [])
+[34mDEBUG[0m:sanic.root:[34mProcess ack: [1m[38;2;255;13;104mSanic-Server-0-0 [34m[4960][0m
+INFO:asyncio:<Server sockets=(<asyncio.TransportSocket fd=752, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> is serving
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=752, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 52653): <socket.socket fd=924, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 52653)>
+DEBUG:asyncio:Using proactor: IocpProactor
+INFO:sanic.server:Starting worker [4960]
+WARNING:asyncio:Executing <Task pending name='Task-7' coro=<HttpProtocol.connection_task() running at C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\sanic\server\protocols\http_protocol.py:160> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py:448> created at C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\sanic\server\protocols\http_protocol.py:299> took 0.234 seconds
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=752, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 60912): <socket.socket fd=896, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 60912)>
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=752, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 62154): <socket.socket fd=960, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 62154)>
+DEBUG:asyncio:Get address info localhost:6379, type=<SocketKind.SOCK_STREAM: 1>
+DEBUG:asyncio:Getting address info localhost:6379, type=<SocketKind.SOCK_STREAM: 1> took 31.000ms: [(<AddressFamily.AF_INET6: 23>, <SocketKind.SOCK_STREAM: 1>, 0, '', ('::1', 6379, 0, 0)), (<AddressFamily.AF_INET: 2>, <SocketKind.SOCK_STREAM: 1>, 0, '', ('127.0.0.1', 6379))]
+[31mERROR[0m:sanic.error:Exception occurred while handling uri: 'http://127.0.0.1:8000/home_updates?datastar=%7B%7D'
+Traceback (most recent call last):
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m305[0m, in [34m[1mconnect_check_health[0m
+[33m    await self.retry.call_with_retry([0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\retry.py", line [36m[1m50[0m, in [34m[1mcall_with_retry[0m
+[33m    return await do()[0m
+[33m           ^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m760[0m, in [34m[1m_connect[0m
+[33m    reader, writer = await asyncio.open_connection([0m
+[33m                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\streams.py", line [36m[1m48[0m, in [34m[1mopen_connection[0m
+[33m    transport, _ = await loop.create_connection([0m
+[33m                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line [36m[1m1140[0m, in [34m[1mcreate_connection[0m
+[33m    raise OSError('Multiple exceptions: {}'.format([0m
+[38;2;255;13;104m[1mOSError[0m: [1mMultiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379)[0m
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\sanic\app.py", line [36m[1m1381[0m, in [34m[1mhandle_request[0m
+[33m    response = await response[0m
+[33m               ^^^^^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\datastar_py\sanic.py", line [36m[1m81[0m, in [34m[1mwrapper[0m
+[33m    async for event in ait:[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\app.py", line [36m[1m56[0m, in [34m[1mhome_updates[0m
+[33m    await pubsub.subscribe("main")[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\client.py", line [36m[1m1071[0m, in [34m[1msubscribe[0m
+[33m    ret_val = await self.execute_command("SUBSCRIBE", *new_channels.keys())[0m
+[33m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\client.py", line [36m[1m924[0m, in [34m[1mexecute_command[0m
+[33m    await self.connect()[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\client.py", line [36m[1m934[0m, in [34m[1mconnect[0m
+[33m    self.connection = await self.connection_pool.get_connection()[0m
+[33m                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m1149[0m, in [34m[1mget_connection[0m
+[33m    await self.ensure_connection(connection)[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m1182[0m, in [34m[1mensure_connection[0m
+[33m    await connection.connect()[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m296[0m, in [34m[1mconnect[0m
+[33m    await self.connect_check_health(check_health=True)[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m315[0m, in [34m[1mconnect_check_health[0m
+[33m    raise ConnectionError(self._error_message(e))[0m
+[38;2;255;13;104m[1mredis.exceptions.ConnectionError[0m: [1mError Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.[0m
+[34mDEBUG[0m:sanic.root:Error Page: The client accepts application/json, using 'json' from request.accept
+DEBUG:asyncio:<_SelectorSocketTransport fd=896 read=polling write=<idle, bufsize=0>> received EOF
+DEBUG:asyncio:<_SelectorSocketTransport fd=960 read=polling write=<idle, bufsize=0>> received EOF
+DEBUG:asyncio:<_SelectorSocketTransport fd=924 read=polling write=<idle, bufsize=0>> received EOF
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=752, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 51946): <socket.socket fd=904, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51946)>
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=752, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 54900): <socket.socket fd=880, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 54900)>
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=752, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 61511): <socket.socket fd=1012, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 61511)>
+[34mDEBUG[0m:sanic.root:Error Page: The client accepts */*, using 'text' from any
+[34mDEBUG[0m:sanic.root:Error Page: The client accepts */*, using 'text' from any
+DEBUG:asyncio:<_SelectorSocketTransport fd=904 read=polling write=<idle, bufsize=0>> received EOF
+DEBUG:asyncio:<_SelectorSocketTransport fd=880 read=polling write=<idle, bufsize=0>> received EOF
+DEBUG:asyncio:<_SelectorSocketTransport fd=1012 read=polling write=<idle, bufsize=0>> received EOF
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=752, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 56124): <socket.socket fd=1008, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 56124)>
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=752, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 60563): <socket.socket fd=1004, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 60563)>
+DEBUG:asyncio:<Server sockets=(<asyncio.TransportSocket fd=752, family=2, type=1, proto=6, laddr=('127.0.0.1', 8000)>,)> got a new connection from ('127.0.0.1', 64302): <socket.socket fd=908, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 64302)>
+DEBUG:asyncio:Get address info localhost:6379, type=<SocketKind.SOCK_STREAM: 1>
+DEBUG:asyncio:Getting address info localhost:6379, type=<SocketKind.SOCK_STREAM: 1> took 0.000ms: [(<AddressFamily.AF_INET6: 23>, <SocketKind.SOCK_STREAM: 1>, 0, '', ('::1', 6379, 0, 0)), (<AddressFamily.AF_INET: 2>, <SocketKind.SOCK_STREAM: 1>, 0, '', ('127.0.0.1', 6379))]
+DEBUG:asyncio:<_SelectorSocketTransport fd=908 read=polling write=<idle, bufsize=0>> received EOF
+[34mDEBUG[0m:sanic.root:Error Page: The client accepts application/json, using 'json' from request.accept
+DEBUG:asyncio:Get address info localhost:6379, type=<SocketKind.SOCK_STREAM: 1>
+DEBUG:asyncio:Getting address info localhost:6379, type=<SocketKind.SOCK_STREAM: 1> took 0.000ms: [(<AddressFamily.AF_INET6: 23>, <SocketKind.SOCK_STREAM: 1>, 0, '', ('::1', 6379, 0, 0)), (<AddressFamily.AF_INET: 2>, <SocketKind.SOCK_STREAM: 1>, 0, '', ('127.0.0.1', 6379))]
+DEBUG:asyncio:<_SelectorSocketTransport fd=1004 read=polling write=<idle, bufsize=0>> received EOF
+[31mERROR[0m:sanic.error:Exception occurred while handling uri: 'http://127.0.0.1:8000/home_updates?datastar=%7B%7D'
+Traceback (most recent call last):
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m305[0m, in [34m[1mconnect_check_health[0m
+[33m    await self.retry.call_with_retry([0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\retry.py", line [36m[1m50[0m, in [34m[1mcall_with_retry[0m
+[33m    return await do()[0m
+[33m           ^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m760[0m, in [34m[1m_connect[0m
+[33m    reader, writer = await asyncio.open_connection([0m
+[33m                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\streams.py", line [36m[1m48[0m, in [34m[1mopen_connection[0m
+[33m    transport, _ = await loop.create_connection([0m
+[33m                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line [36m[1m1140[0m, in [34m[1mcreate_connection[0m
+[33m    raise OSError('Multiple exceptions: {}'.format([0m
+[38;2;255;13;104m[1mOSError[0m: [1mMultiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379)[0m
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\sanic\app.py", line [36m[1m1381[0m, in [34m[1mhandle_request[0m
+[33m    response = await response[0m
+[33m               ^^^^^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\datastar_py\sanic.py", line [36m[1m81[0m, in [34m[1mwrapper[0m
+[33m    async for event in ait:[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\app.py", line [36m[1m56[0m, in [34m[1mhome_updates[0m
+[33m    await pubsub.subscribe("main")[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\client.py", line [36m[1m1071[0m, in [34m[1msubscribe[0m
+[33m    ret_val = await self.execute_command("SUBSCRIBE", *new_channels.keys())[0m
+[33m              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\client.py", line [36m[1m924[0m, in [34m[1mexecute_command[0m
+[33m    await self.connect()[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\client.py", line [36m[1m934[0m, in [34m[1mconnect[0m
+[33m    self.connection = await self.connection_pool.get_connection()[0m
+[33m                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m1149[0m, in [34m[1mget_connection[0m
+[33m    await self.ensure_connection(connection)[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m1182[0m, in [34m[1mensure_connection[0m
+[33m    await connection.connect()[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m296[0m, in [34m[1mconnect[0m
+[33m    await self.connect_check_health(check_health=True)[0m
+  File "C:\Users\p117380\Code\sites\datastar-draftest\.venv\Lib\site-packages\redis\asyncio\connection.py", line [36m[1m315[0m, in [34m[1mconnect_check_health[0m
+[33m    raise ConnectionError(self._error_message(e))[0m
+[38;2;255;13;104m[1mredis.exceptions.ConnectionError[0m: [1mError Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.[0m
+[34mDEBUG[0m:sanic.root:Error Page: The client accepts application/json, using 'json' from request.accept
+DEBUG:asyncio:<_SelectorSocketTransport fd=1008 read=polling write=<idle, bufsize=0>> received EOF
+WARNING:asyncio:Executing <TimerHandle when=17627.975 _set_result_unless_cancelled(<Future finis...events.py:448>, None) at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\futures.py:313 created at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:661> took 0.141 seconds
