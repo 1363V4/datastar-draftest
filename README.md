@@ -4,9 +4,9 @@ uh oh je redraft à chaque refresh FIX aux query strings
 Order is wrong. How to do selected??
 Add bans (change 10 to 20)
 Vote on drafts (change db)
-Vs IA and vs someone else
-CSS fix (background text)
-Leaky bucket
+Vs IA and vs someone else OK 
+CSS fix (background text) OK
+Leaky bucket OK
 Put online?
 
 # Notes
@@ -23,6 +23,6 @@ Zero cookie use aussi à part user_id
 On garde l'info, on fait des routes hypermedia
 Pas trop de routes, get/post differentiation, query string and match
 
-# Security
+# Next
 Les gens veulent
 Authentication, security tokens, CORS, CSRF, XSS

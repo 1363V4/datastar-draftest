@@ -15,9 +15,10 @@ from models import Draft
 from move_order import move_order
 
 
-leaky_q = asyncio.Queue()
-LEAKY_OUT = 5
-LEAKY_EVERY = 0.01
+# HMMMMM
+# leaky_q = asyncio.Queue()
+# LEAKY_OUT = 5
+# LEAKY_EVERY = 0.01
 
 app = Sanic(__name__)
 app.static('/static/', './static/')
@@ -45,7 +46,7 @@ async def close_connections(app):
 
 @app.on_response
 async def cookie(request, response):
-    if not request.cookies.get("user_id"):
+    if ("user_id" not in request.cookies) and ("user_id" not in response.cookies):
         user_id = uuid4().hex
         response.add_cookie('user_id', user_id)
 
@@ -56,6 +57,7 @@ async def home_updates(request):
     await pubsub.subscribe("main")
     try:
         async for _ in pubsub.listen():
+            print("home updates")
             print(datetime.now())
             response_html = await home_page()
             print(datetime.now())
@@ -66,18 +68,27 @@ async def home_updates(request):
         await pubsub.unsubscribe("main")
         await pubsub.close()
 
-@app.get("/draft")
-async def new_draft(request):
+@app.get("/draft/<mode>")
+async def new_draft(request, mode):
     user_id = request.cookies.get('user_id')
-    draft_id = Draft.create(
-        red=user_id,
-        blue=user_id
-    )
+    match mode:
+        case "solo":
+            draft_id = Draft.create(
+                blue=user_id,
+                red=user_id
+            )
+        case "friend":
+            draft_id = Draft.create(
+                blue=user_id,
+                red=None
+            )
+        case "solo":
+            return redirect("/")    
     return redirect(f"/d/{draft_id}")
 
 @app.get("/d/<draft_id>")
-async def draft(request, draft_id):
-    return html(f'''
+async def draft(request, draft_id):    
+    response = html(f'''
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,6 +109,19 @@ async def draft(request, draft_id):
 </html>
     ''')
 
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        draft = Draft.get(Draft.id == draft_id)
+        if draft.red is None and user_id != str(draft.blue).replace("-", ""):
+            user_id = uuid4().hex
+            response.add_cookie('user_id', user_id)
+        
+            draft.red = user_id
+            draft.save()
+            await app.ctx.redis_client.publish(f"draft:{draft_id}", "rugpull")
+    
+    return response
+
 @app.get("/d/<draft_id>/draft_updates")
 @datastar_response
 async def draft_updates(request, draft_id):
@@ -107,8 +131,10 @@ async def draft_updates(request, draft_id):
     await pubsub.subscribe(channel)
     try:
         async for msg in pubsub.listen():
-            print(datetime.now(), msg)
+            print(msg)
+            print(datetime.now())
             response_html = await draft_page(draft_id, user_id)
+            print(datetime.now())
             yield SSE.patch_elements(response_html)
     except asyncio.CancelledError:
         raise
@@ -121,10 +147,20 @@ async def draft_updates(request, draft_id):
 async def da_post_route(request, draft_id):
     vote = request.args.get("vote")
     champ = request.args.get("pick")
+    user_id = request.cookies.get('user_id')
     draft = Draft.get(Draft.id == draft_id)
+    
+    if user_id not in [str(draft.blue).replace("-", ""), str(draft.red).replace("-", "") if draft.red else None]:
+        return
+    
     match vote, champ:
-        case _, None:
+        case "blue", None:
             draft.votes_blue += 1
+            draft.save()
+            await app.ctx.redis_client.publish("main", "rugpull")
+        case "red", None:
+            draft.votes_red += 1
+            draft.save()
             await app.ctx.redis_client.publish("main", "rugpull")
         case None, _:
             if draft.current_move == 20:
@@ -138,7 +174,6 @@ async def da_post_route(request, draft_id):
             await app.ctx.redis_client.publish(f"draft:{draft_id}", "rugpull")
         case _:
             return
-
 
 if __name__ == "__main__":
     app.run(debug=True, auto_reload=True, access_log=False)

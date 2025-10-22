@@ -12,10 +12,12 @@ async def home_page():
             f'''
             <article class="gm-m">
                 <div class="ratio">
-                    <button class="blue-button" data-on-click="@post('/d/{draft.id}?vote=blue')">Vote Blue</button>
-                    <div class="blue-ratio" style="width: {draft.votes_blue / total_votes}%"></div>
-                    <div class="red-ratio" style="width: {draft.votes_red / total_votes}%"></div>
-                    <button class="blue-button" data-on-click="@post('/d/{draft.id}?vote=red')">Vote Red</button>
+                    <button data-on-click="@post('/d/{draft.id}?vote=blue')">Vote Blue</button>
+                    <div>
+                        <div class="blue-ratio" style="width: {100 * draft.votes_blue / total_votes}%"></div>
+                        <div class="red-ratio" style="width: {100 * draft.votes_red / total_votes}%"></div>
+                    </div>
+                    <button data-on-click="@post('/d/{draft.id}?vote=red')">Vote Red</button>
                 </div>
                 <div class="picks">
                     <div data-sheet={champs[draft.b1p]['sheet']} data-champion="{champs[draft.b1p]['name']}"></div>
@@ -30,7 +32,7 @@ async def home_page():
                     <div data-sheet={champs[draft.r2p]['sheet']} data-champion="{champs[draft.r2p]['name']}"></div>
                     <div data-sheet={champs[draft.r1p]['sheet']} data-champion="{champs[draft.r1p]['name']}"></div>
                 </div>
-                <div class="bans">
+                <div class="ban-wrapper bans">
                     <div data-sheet={champs[draft.b1b]['sheet']} data-champion="{champs[draft.b1b]['name']}"></div>
                     <div data-sheet={champs[draft.b2b]['sheet']} data-champion="{champs[draft.b2b]['name']}"></div>
                     <div data-sheet={champs[draft.b3b]['sheet']} data-champion="{champs[draft.b3b]['name']}"></div>
@@ -55,11 +57,31 @@ async def home_page():
 
 async def draft_page(draft_id, user_id):
     draft = Draft.get(Draft.id == draft_id)
+    instruction, alert = "", ""
+    blue_view = str(draft.blue).replace("-", "") == user_id
     match draft.current_move:
-        case 0:
-            instruction = "mok"
+        case 1 | 2 | 5 | 13 | 14:
+            instruction = "Red to ban"
+            alert = "Wait for opponent to play" if blue_view else ""
+        case 0 | 3 | 4 | 12 | 15:
+            instruction = "Blue to ban"
+            alert = "Wait for opponent to play" if not blue_view else ""
+        case 6 | 9 | 10 | 17 | 18:
+            instruction = "Blue to pick"
+            alert = "Wait for opponent to play" if blue_view else ""
+        case 7 | 8 | 11 | 16 | 19:
+            instruction = "Red to pick"
+            alert = "Wait for opponent to play" if not blue_view else ""
         case _:
-            instruction = "stinky poopy"
+            instruction = "GG"
+    if not draft.red:
+        alert = f'''
+        Send this link to the other player:
+        <hr class="gm-s">
+        https://draft.leg.ovh/d/{draft.id}
+        '''
+    if draft.blue == draft.red:
+        alert = ""
     all_champs = [
         draft.b1p, draft.b1b, draft.b2p, draft.b2b, draft.b3p, 
         draft.b3b, draft.b4p, draft.b4b, draft.b5p, draft.b5b, 
@@ -70,18 +92,19 @@ async def draft_page(draft_id, user_id):
     html = f'''
 <body class="gc">
 <p id="instructions" class="gt-xl">{instruction}</p>
+{f'<div class="go gp-m alert">{alert}</div>' if alert else ""}
 <div id="wrapper">
-    <article id="blue-side" class="gc">
-        <div data-sheet={champs.get(draft.b1p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b1p, the_chefs_trick)['name']}"></div>
+    <article id="blue-side" class="gc gp-m">
         <div class="bans" data-sheet={champs.get(draft.b1b, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b1b, the_chefs_trick)['name']}"></div>
-        <div data-sheet={champs.get(draft.b2p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b2p, the_chefs_trick)['name']}"></div>
+        <div data-sheet={champs.get(draft.b1p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b1p, the_chefs_trick)['name']}"></div>
         <div class="bans" data-sheet={champs.get(draft.b2b, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b2b, the_chefs_trick)['name']}"></div>
-        <div data-sheet={champs.get(draft.b3p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b3p, the_chefs_trick)['name']}"></div>
+        <div data-sheet={champs.get(draft.b2p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b2p, the_chefs_trick)['name']}"></div>
         <div class="bans" data-sheet={champs.get(draft.b3b, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b3b, the_chefs_trick)['name']}"></div>
-        <div data-sheet={champs.get(draft.b4p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b4p, the_chefs_trick)['name']}"></div>
+        <div data-sheet={champs.get(draft.b3p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b3p, the_chefs_trick)['name']}"></div>
         <div class="bans" data-sheet={champs.get(draft.b4b, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b4b, the_chefs_trick)['name']}"></div>
-        <div data-sheet={champs.get(draft.b5p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b5p, the_chefs_trick)['name']}"></div>
+        <div data-sheet={champs.get(draft.b4p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b4p, the_chefs_trick)['name']}"></div>
         <div class="bans" data-sheet={champs.get(draft.b5b, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b5b, the_chefs_trick)['name']}"></div>
+        <div data-sheet={champs.get(draft.b5p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b5p, the_chefs_trick)['name']}"></div>
     </article>
     <article id ="picker"
     data-signals-filter__ifmissing="'all'"
@@ -97,7 +120,9 @@ async def draft_page(draft_id, user_id):
             <div></div>
             <input data-bind-search type="text" placeholder="Search"></input>
         </div>
-        <div id="legends" data-on-click="@post('/d/{draft_id}?pick=' + event.target.id)">
+        <div id="legends" 
+        {f'''data-on-click="@post('/d/{draft.id}?pick=' + event.target.id)"''' if not alert else ""}
+        >
             {"".join(
                 [
                     f'''
@@ -105,17 +130,18 @@ async def draft_page(draft_id, user_id):
                     id="{key}" 
                     data-sheet={champ['sheet']}
                     data-champion="{champ['name']}"
-                    banned={key in all_champs}
+                    {"banned" if key in all_champs else ""}
                     data-show="($filter == 'all' || $filter == {'|| $filter == '.join(f"'{role}'" for role in champ['role'])}) 
-                    && ($search == '' || '{champ['name']}'.toLowerCase().includes($search.toLowerCase()))">"
-                    aria-describedby="aria-{champ['name']}"'''
+                    && ($search == '' || '{champ['name']}'.toLowerCase().includes($search.toLowerCase()))"
+                    aria-describedby="aria-{champ['name']}"
+                    >'''
                     + f'<div id=aria-{champ['name']} role="tooltip">{champ['name']}</div></div>'
                     for key, champ in champs.items()
                 ]
             )}
         </div>
     </article>
-    <article id="red-side" class="gc">
+    <article id="red-side" class="gc gp-m">
         <div data-sheet={champs.get(draft.r1p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.r1p, the_chefs_trick)['name']}"></div>
         <div class="bans" data-sheet={champs.get(draft.r1b, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.r1b, the_chefs_trick)['name']}"></div>
         <div data-sheet={champs.get(draft.r2p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.r2p, the_chefs_trick)['name']}"></div>

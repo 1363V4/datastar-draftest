@@ -29,18 +29,28 @@ p {
     background: var(--green-but-a-bit-less-green);
 }
 
+button {
+    background: var(--somehow-also-green);
+    cursor: pointer;
+}
+
 article .ratio {
     display: grid;
-    grid-template-columns: repeat(11, 1rem);
+    grid-template-columns: auto 1fr auto;
     gap: .2rem;
     width: 100%;
-    height: .5rem;
-    .blue-ratio, button::first-child {background: var(--blue-down)};
-    .red-ratio, button::last-child {background: var(--and-a-red-touch)};
+    .blue-ratio, button:first-child {background: var(--blue-down)};
+    .red-ratio, button:last-child {background: var(--and-a-red-touch)};
+    div {display: flex;}
 }
-article .picks {
+
+.blue-ratio, .red-ratio {
+    height: 100%;
+}
+
+article .picks, .ban-wrapper {
     display: grid;
-    grid-template-columns: repeat(5, 1rem) 1fr repeat(5, 1rem);
+    grid-template-columns: repeat(5, 48px) 1fr repeat(5, 48px);
     align-items: center;
     img {
         width: 1rem;
@@ -49,14 +59,16 @@ article .picks {
 
 .bans {
     filter: grayscale(1);
-    width: 80%;
+    scale: .6;
 }
 
 /* DRAFTS */
 
 #wrapper {
     display: grid;
-    grid-template-columns: 50px 1fr 50px;
+    height: 70dvh;
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center;
     gap: 2rem;
 }
 
@@ -64,19 +76,23 @@ article .picks {
     display: grid;
     grid-template-rows: repeat(5, 1fr);
     grid-template-columns: 1fr 1fr;
+    height: 100%;
     gap: 4px;
-    background: var(--green-green);
     border-radius: .2rem;
+    mix-blend-mode: lighten;
 }
 
 #blue-side {
+    background: var(--blue-up);
     outline: solid 5px var(--blue-down)
 }
 #red-side {
+    background: var(--and-a-red-touch);
     outline: solid 5px var(--and-a-red-touch)
 }
 
 #picker {
+    align-self: start;
     display: grid;
     grid-template-rows: 1rem 1fr;
     gap: .5rem;
@@ -91,7 +107,7 @@ article .picks {
 }
 
 #roles input {
-    color: var(--blue-text);
+    color: var(--and-a-red-touch);
     font-size: .6rem;
     padding-inline: .4rem;
     border-radius: .5rem;
@@ -103,22 +119,31 @@ article .picks {
     cursor: pointer;
 }
 
+[selected] {
+    filter: drop-shadow(0px 0px 4px var(--and-a-red-touch));
+}
 #roles img:hover:not([selected]) {
     filter: drop-shadow(0px 0px 4px var(--blue-down));
 }
 
 #legends {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     gap: 5px;
-    max-height: 50dvh;
+    max-height: 60dvh;
     width: max-content;
     overflow-y: scroll;
     scrollbar-width: none;
+    filter: drop-shadow(2px 2px 4px var(--blue-bg));
+    div:not([banned]) {
+        cursor: pointer;
+        &:hover {filter: drop-shadow(-2px 2px 4px var(--yellow-border))}
+    }
 }
 
 [banned] {
-    filter: blur(10px);
+    cursor: not-allowed;
+    filter: sepia(1);
 }
 
 [role="tooltip"] {
@@ -139,6 +164,10 @@ article .picks {
     visibility: visible;
 }
 
+.alert {
+    background: var(--blue-down);
+    filter: drop-shadow(2px 2px 4px black);
+}
 
 .loader {
     width: 48px;
