@@ -46,7 +46,7 @@ async def close_connections(app):
 
 @app.on_response
 async def cookie(request, response):
-    if ("user_id" not in request.cookies) and ("user_id" not in response.cookies):
+    if not request.cookies.get("user_id") and "user_id" not in response.cookies.cookies:
         user_id = uuid4().hex
         response.add_cookie('user_id', user_id)
 
@@ -176,4 +176,8 @@ async def da_post_route(request, draft_id):
             return
 
 if __name__ == "__main__":
-    app.run(debug=True, auto_reload=True, access_log=False)
+    app.run(
+    debug=False, 
+    auto_reload=True, 
+    unix='draft.sock',
+    access_log=False)
