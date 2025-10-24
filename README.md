@@ -26,3 +26,14 @@ Pas trop de routes, get/post differentiation, query string and match
 # Next
 Les gens veulent
 Authentication, security tokens, CORS, CSRF, XSS
+
+# TODO
+les noms quand on passe dans l'accueil
+texte blue side red side
+point d'interrogation
+sides bien symétriques, en gris
+trait au milieu dans home page
+elargir le cadre
+petit tooltip au dessus des roles
+etapes en rouge bleu
+tooltips

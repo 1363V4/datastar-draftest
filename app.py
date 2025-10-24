@@ -177,7 +177,8 @@ async def da_post_route(request, draft_id):
 
 if __name__ == "__main__":
     app.run(
-    debug=False, 
+    # debug=False, 
+    debug=True, 
     auto_reload=True, 
-    unix='draft.sock',
+    # unix='draft.sock',
     access_log=False)

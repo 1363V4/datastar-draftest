@@ -1,9 +1,13 @@
 @import url("gold.css") layer(gold);
 @import url("champions.css") layer(champions);
 
+@import url('https://fonts.googleapis.com/css2?family=Quintessential&family=Skranji:wght@400;700&display=swap');
+
 :root {
+    --bibi-black: #101111;
+    --bibi-grey: #353535;
     --blue-text: #A2C5C5;
-    --blue-bg: #1E252A;
+    --blue-bg: #132532;
     --blue-down: #00618D;
     --blue-up: #06D9C8;
     --yellow-border: #FFDE6B;
@@ -15,23 +19,49 @@
 }
 
 body {
-    background: linear-gradient(to bottom, var(--blue-bg), transparent);
+    font-family: 'Quintessential';
+    background: var(--bibi-black);
     color: var(--blue-text);
     min-height: 100dvh;
 }
 
-h1 {
+
+h1, p {
     font-weight: bold;
-    background: var(--green-blue);
+    background: var(--blue-bg);
+}
+
+h1, #instructions {
+    font-family: 'Skranji';
+    width: 100%;
+    text-align: center;
 }
 
 p {
-    background: var(--green-but-a-bit-less-green);
+    background: none;
+    font-family: 'Quintessential';
+}
+
+#instructions.blue-instruction {
+    background: var(--blue-down);
+}
+
+#instructions.red-instruction {
+    background: var(--and-a-red-touch);
 }
 
 button {
-    background: var(--somehow-also-green);
+    background: var(--blue-bg);
+    outline: 1px solid var(--bibi-grey);
     cursor: pointer;
+    width: 12rem;
+    transition: all .1s linear;
+    a {text-decoration: none;}
+}
+
+button:hover {
+transform: translateY(-1px);
+    filter: brightness(1.05);
 }
 
 article .ratio {
@@ -41,54 +71,79 @@ article .ratio {
     width: 100%;
     .blue-ratio, button:first-child {background: var(--blue-down)};
     .red-ratio, button:last-child {background: var(--and-a-red-touch)};
-    div {display: flex;}
+    div {display: flex; position: relative;}
+    button {
+        width: 5rem;
+        border: none;
+    }
 }
 
 .blue-ratio, .red-ratio {
-    height: 100%;
+    height: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: white;
 }
 
 article .picks, .ban-wrapper {
     display: grid;
-    grid-template-columns: repeat(5, 48px) 1fr repeat(5, 48px);
+    grid-template-columns: repeat(5, 1fr) 1fr repeat(5, 1fr);
     align-items: center;
+    gap: 0.5rem;
     img {
-        width: 1rem;
+        width: 2rem;
+        background: var(--yellow-border);
     }
 }
 
 .bans {
     filter: grayscale(1);
-    scale: .6;
 }
-
-/* DRAFTS */
 
 #wrapper {
     display: grid;
-    height: 70dvh;
+    height: 80dvh;
     grid-template-columns: repeat(3, 1fr);
     place-items: center;
-    gap: 2rem;
 }
 
 #blue-side, #red-side {
     display: grid;
-    grid-template-rows: repeat(5, 1fr);
+    grid-template-rows: auto repeat(5, 1fr);
     grid-template-columns: 1fr 1fr;
+    gap: 0rem 2rem;
     height: 100%;
-    gap: 4px;
+    width: 10rem;
     border-radius: .2rem;
-    mix-blend-mode: lighten;
+    outline: 1px solid var(--bibi-grey);
+    .bans {
+        filter: grayscale(1);
+    }
 }
 
-#blue-side {
-    background: var(--blue-up);
-    outline: solid 5px var(--blue-down)
+.draft-header {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: .5rem;
 }
-#red-side {
-    background: var(--and-a-red-touch);
-    outline: solid 5px var(--and-a-red-touch)
+
+.blue-header {
+    color: var(--blue-down);
+}
+
+.red-header {
+    color: var(--and-a-red-touch);
+}
+
+#blue-side [data-champion] {
+    outline: 2px solid var(--blue-down);
+}
+#red-side [data-champion] {
+    outline: 2px solid var(--and-a-red-touch);
 }
 
 #picker {
@@ -97,17 +152,16 @@ article .picks, .ban-wrapper {
     grid-template-rows: 1rem 1fr;
     gap: .5rem;
     align-items: start;
-    transition: .2s linear;
 }
 
 #roles {
     display: grid;
-    grid-template-columns: repeat(5, 1rem) 1fr 10rem;
+    grid-template-columns: repeat(5, 1fr) 1fr 10rem;
     gap: .1rem;
 }
 
 #roles input {
-    color: var(--and-a-red-touch);
+    color: var(--blue-text);
     font-size: .6rem;
     padding-inline: .4rem;
     border-radius: .5rem;
@@ -117,6 +171,10 @@ article .picks, .ban-wrapper {
     height: 1rem;
     aspect-ratio: 1/1;
     cursor: pointer;
+}
+
+#roles [role="tooltip"] {
+    translate: 0% -100%
 }
 
 [selected] {
@@ -130,15 +188,32 @@ article .picks, .ban-wrapper {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     gap: 5px;
-    max-height: 60dvh;
+    max-height: 70dvh;
     width: max-content;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    filter: drop-shadow(2px 2px 4px var(--blue-bg));
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: currentColor transparent;
+    scrollbar-gutter: stable;
     div:not([banned]) {
         cursor: pointer;
-        &:hover {filter: drop-shadow(-2px 2px 4px var(--yellow-border))}
+        &:hover {filter: drop-shadow(2px 2px 4px var(--yellow-border))}
     }
+}
+
+#legends::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+}
+#legends::-webkit-scrollbar-thumb {
+    background: currentColor;
+    border-radius: 4px;
+}
+#legends::-webkit-scrollbar-track {
+    background: transparent;
+}
+#legends::-webkit-scrollbar-corner {
+    background: transparent;
 }
 
 [banned] {
