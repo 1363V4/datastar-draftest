@@ -46,7 +46,7 @@ async def close_connections(app):
 
 @app.on_response
 async def cookie(request, response):
-    if not request.cookies.get("user_id") and "user_id" not in response.cookies.cookies:
+    if request.path == "/" and not request.cookies.get("user_id"):
         user_id = uuid4().hex
         response.add_cookie('user_id', user_id)
 
@@ -109,14 +109,13 @@ async def draft(request, draft_id):
 
     user_id = request.cookies.get('user_id')
     if not user_id:
-        draft = Draft.get(Draft.id == draft_id)
-        if draft.red is None and user_id != str(draft.blue).replace("-", ""):
-            user_id = uuid4().hex
-            response.add_cookie('user_id', user_id)
+        user_id = uuid4().hex
+        response.add_cookie('user_id', user_id)
 
-            draft.red = user_id
-            draft.save()
-            await app.ctx.redis_client.publish(f"draft:{draft_id}", "rugpull")
+        draft = Draft.get(Draft.id == draft_id)
+        draft.red = user_id
+        draft.save()
+        await app.ctx.redis_client.publish(f"draft:{draft_id}", "rugpull")
 
     return response
 

@@ -1,6 +1,5 @@
 from champs import champs
 from models import Draft, Vote
-import logging
 
 
 async def home_page(user_id):
@@ -8,10 +7,7 @@ async def home_page(user_id):
     votes = Vote.select().where(Vote.user_id == user_id)
     user_voted = [vote.draft_id for vote in list(votes)]
     drafts_html = []
-    logger = logging.getLogger(__name__)
     for draft in drafts:
-        logger.info(user_voted)
-        logger.info(draft.id)
         if not draft.current_move == 20:
             continue
         total_votes = draft.votes_blue + draft.votes_red
@@ -105,6 +101,8 @@ async def draft_page(draft_id, user_id):
     html = f'''
 <body class="gc">
 <p id="instructions" class="gt-xl {instruction_class}">{instruction}</p>
+{draft.blue}
+{draft.red}
 {f'<div class="go gp-m alert">{alert}</div>' if alert else ""}
 <div id="wrapper">
     <article id="blue-side" class="gc">
