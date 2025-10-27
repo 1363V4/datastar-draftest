@@ -1,7 +1,7 @@
 @import url("gold.css") layer(gold);
 @import url("champions.css") layer(champions);
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quintessential&family=Skranji:wght@400;700&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&family=Tilt+Prism&family=VT323&family=Workbench&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Prism&family=VT323&display=swap');
 
 :root {
     --bibi-black: #101111;

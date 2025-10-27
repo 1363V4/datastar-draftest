@@ -10,6 +10,7 @@ Leaky bucket OK
 Put online? OK
 V6?
 Vote put & new table?
+19H15/30
 
 # Notes
 bottleneck for now seems to be redis pubsub

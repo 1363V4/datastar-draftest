@@ -1,5 +1,4 @@
 import asyncio
-from datetime import datetime
 import redis.asyncio as redis
 import logging
 from uuid import uuid4
@@ -80,7 +79,7 @@ async def new_draft(request, mode):
                 blue=user_id,
                 red=None
             )
-        case "solo":
+        case _:
             return redirect("/")
     return redirect(f"/d/{draft_id}")
 
@@ -115,7 +114,7 @@ async def draft(request, draft_id):
         draft = Draft.get(Draft.id == draft_id)
         draft.red = user_id
         draft.save()
-        await app.ctx.redis_client.publish(f"draft:{draft_id}", "rugpull")
+        await app.ctx.redis_client.publish(f"draft:{draft_id}", "faker")
 
     return response
 
@@ -127,7 +126,7 @@ async def draft_updates(request, draft_id):
     channel = f"draft:{draft_id}"
     await pubsub.subscribe(channel)
     try:
-        async for msg in pubsub.listen():
+        async for _ in pubsub.listen():
             response_html = await draft_page(draft_id, user_id)
             yield SSE.patch_elements(response_html)
     except asyncio.CancelledError:
@@ -149,11 +148,10 @@ async def da_post_route(request, draft_id):
 
     match vote, champ:
         case "blue", None:
-            logger.info(user_id, draft_id)
             Vote.create(user_id=user_id, draft_id=draft_id)
             draft.votes_blue += 1
             draft.save()
-            await app.ctx.redis_client.publish("main", "rugpull")
+            await app.ctx.redis_client.publish("main", "blabla")
         case "red", None:
             Vote.create(user_id=user_id, draft_id=draft_id)
             draft.votes_red += 1

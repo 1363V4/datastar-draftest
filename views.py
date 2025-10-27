@@ -101,8 +101,6 @@ async def draft_page(draft_id, user_id):
     html = f'''
 <body class="gc">
 <p id="instructions" class="gt-xl {instruction_class}">{instruction}</p>
-{draft.blue}
-{draft.red}
 {f'<div class="go gp-m alert">{alert}</div>' if alert else ""}
 <div id="wrapper">
     <article id="blue-side" class="gc">
