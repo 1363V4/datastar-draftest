@@ -4,10 +4,12 @@ uh oh je redraft à chaque refresh FIX aux query strings
 Order is wrong. How to do selected??
 Add bans (change 10 to 20)
 Vote on drafts (change db)
-Vs IA and vs someone else OK 
+Vs IA and vs someone else OK
 CSS fix (background text) OK
 Leaky bucket OK
-Put online?
+Put online? OK
+V6?
+Vote put & new table?
 
 # Notes
 bottleneck for now seems to be redis pubsub

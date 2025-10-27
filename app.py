@@ -11,7 +11,7 @@ from datastar_py.sanic import datastar_response
 from peewee import SqliteDatabase
 
 from views import home_page, draft_page
-from models import Draft
+from models import Draft, Vote
 from move_order import move_order
 
 
@@ -33,10 +33,10 @@ logger = logging.getLogger(__name__)
 @app.before_server_start
 async def open_connections(app):
     app.ctx.db = SqliteDatabase('drafts.db')
-    app.ctx.db.bind([Draft])
+    app.ctx.db.bind([Draft, Vote])
     app.ctx.db.connect()
     with app.ctx.db:
-        app.ctx.db.create_tables([Draft])
+        app.ctx.db.create_tables([Draft, Vote])
     app.ctx.redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
 @app.after_server_stop
@@ -53,14 +53,12 @@ async def cookie(request, response):
 @app.get("/home_updates")
 @datastar_response
 async def home_updates(request):
+    user_id = request.cookies.get('user_id')
     pubsub = app.ctx.redis_client.pubsub()
     await pubsub.subscribe("main")
     try:
         async for _ in pubsub.listen():
-            print("home updates")
-            print(datetime.now())
-            response_html = await home_page()
-            print(datetime.now())
+            response_html = await home_page(user_id)
             yield SSE.patch_elements(response_html)
     except asyncio.CancelledError:
         raise
@@ -83,11 +81,11 @@ async def new_draft(request, mode):
                 red=None
             )
         case "solo":
-            return redirect("/")    
+            return redirect("/")
     return redirect(f"/d/{draft_id}")
 
 @app.get("/d/<draft_id>")
-async def draft(request, draft_id):    
+async def draft(request, draft_id):
     response = html(f'''
 <!DOCTYPE html>
 <html lang="en">
@@ -97,11 +95,11 @@ async def draft(request, draft_id):
     <title>Draftest</title>
     <link rel="icon" href="/static/img/rocket.png">
     <link rel="stylesheet" href="/static/css/site.css">
-    <script type="module" src="/static/js/datastar.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@1.0.0-RC.6/bundles/datastar.js"></script>
 </head>
-<body class="gc">
+<body class="gc" data-init="@get('/d/{draft_id}/draft_updates')">
     <h1 class="gt-xl gm-xl">LOL Drafts</h1>
-    <div id="drafts" class="gc" data-on-load="@get('/d/{draft_id}/draft_updates')">
+    <div id="drafts" class="gc">
         <span class="loader"></span>
         <p>Preparing your draft</p>
     </div>
@@ -115,11 +113,11 @@ async def draft(request, draft_id):
         if draft.red is None and user_id != str(draft.blue).replace("-", ""):
             user_id = uuid4().hex
             response.add_cookie('user_id', user_id)
-        
+
             draft.red = user_id
             draft.save()
             await app.ctx.redis_client.publish(f"draft:{draft_id}", "rugpull")
-    
+
     return response
 
 @app.get("/d/<draft_id>/draft_updates")
@@ -131,10 +129,7 @@ async def draft_updates(request, draft_id):
     await pubsub.subscribe(channel)
     try:
         async for msg in pubsub.listen():
-            print(msg)
-            print(datetime.now())
             response_html = await draft_page(draft_id, user_id)
-            print(datetime.now())
             yield SSE.patch_elements(response_html)
     except asyncio.CancelledError:
         raise
@@ -149,16 +144,19 @@ async def da_post_route(request, draft_id):
     champ = request.args.get("pick")
     user_id = request.cookies.get('user_id')
     draft = Draft.get(Draft.id == draft_id)
-    
+
     if user_id not in [str(draft.blue).replace("-", ""), str(draft.red).replace("-", "") if draft.red else None]:
         return
-    
+
     match vote, champ:
         case "blue", None:
+            logger.info(user_id, draft_id)
+            Vote.create(user_id=user_id, draft_id=draft_id)
             draft.votes_blue += 1
             draft.save()
             await app.ctx.redis_client.publish("main", "rugpull")
         case "red", None:
+            Vote.create(user_id=user_id, draft_id=draft_id)
             draft.votes_red += 1
             draft.save()
             await app.ctx.redis_client.publish("main", "rugpull")
@@ -177,8 +175,8 @@ async def da_post_route(request, draft_id):
 
 if __name__ == "__main__":
     app.run(
-    # debug=False, 
-    debug=True, 
-    auto_reload=True, 
-    # unix='draft.sock',
+    # debug=True,
+    debug=False,
+    auto_reload=True,
+    unix='draft.sock',
     access_log=False)

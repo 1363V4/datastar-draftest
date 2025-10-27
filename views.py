@@ -1,10 +1,17 @@
 from champs import champs
-from models import Draft
+from models import Draft, Vote
+import logging
 
-async def home_page():
+
+async def home_page(user_id):
     drafts = Draft.select()
+    votes = Vote.select().where(Vote.user_id == user_id)
+    user_voted = [vote.draft_id for vote in list(votes)]
     drafts_html = []
+    logger = logging.getLogger(__name__)
     for draft in drafts:
+        logger.info(user_voted)
+        logger.info(draft.id)
         if not draft.current_move == 20:
             continue
         total_votes = draft.votes_blue + draft.votes_red
@@ -12,12 +19,12 @@ async def home_page():
             f'''
             <article class="gm-m">
                 <div class="ratio">
-                    <button data-on-click="@post('/d/{draft.id}?vote=blue')">Vote Blue</button>
+                    {f'''<button data-on:click="@post('/d/{draft.id}?vote=blue')">Vote Blue</button>''' if draft.id not in user_voted else "<div></div>"}
                     <div>
                         <div class="blue-ratio" style="width: {100 * draft.votes_blue / total_votes}%">{round(100 * draft.votes_blue / total_votes)}%</div>
                         <div class="red-ratio" style="width: {100 * draft.votes_red / total_votes}%">{round(100 * draft.votes_red / total_votes)}%</div>
                     </div>
-                    <button data-on-click="@post('/d/{draft.id}?vote=red')">Vote Red</button>
+                    {f'''<button data-on:click="@post('/d/{draft.id}?vote=red')">Vote Red</button>''' if draft.id not in user_voted else "<div></div>"}
                 </div>
                 <div class="picks gc">
                     <div data-sheet={champs[draft.b1p]['sheet']} data-champion="{champs[draft.b1p]['name']}" aria-describedby="aria-{champs[draft.b1p]['name']}"><div id=aria-{champs[draft.b1p]['name']} role="tooltip">{champs[draft.b1p]['name']}</div></div>
@@ -83,9 +90,9 @@ async def draft_page(draft_id, user_id):
     if draft.blue == draft.red:
         alert = ""
     all_champs = [
-        draft.b1p, draft.b1b, draft.b2p, draft.b2b, draft.b3p, 
-        draft.b3b, draft.b4p, draft.b4b, draft.b5p, draft.b5b, 
-        draft.r1p, draft.r1b, draft.r2p, draft.r2b, draft.r3p, 
+        draft.b1p, draft.b1b, draft.b2p, draft.b2b, draft.b3p,
+        draft.b3b, draft.b4p, draft.b4b, draft.b5p, draft.b5b,
+        draft.r1p, draft.r1b, draft.r2p, draft.r2b, draft.r3p,
         draft.r3b, draft.r4p, draft.r4b, draft.r5p, draft.r5b
     ]
     the_chefs_trick = {'sheet': -1, 'name': 'MissingNo'}
@@ -94,7 +101,7 @@ async def draft_page(draft_id, user_id):
         instruction_class = "blue-instruction"
     elif "Red" in instruction:
         instruction_class = "red-instruction"
-    
+
     html = f'''
 <body class="gc">
 <p id="instructions" class="gt-xl {instruction_class}">{instruction}</p>
@@ -114,44 +121,44 @@ async def draft_page(draft_id, user_id):
         <div data-sheet={champs.get(draft.b5p, the_chefs_trick)['sheet']} data-champion="{champs.get(draft.b5p, the_chefs_trick)['name']}"></div>
     </article>
     <article id ="picker"
-    data-signals-filter__ifmissing="'all'"
+    data-signals:filter__ifmissing="'all'"
     >
         <div id="roles">
-            <div class="gz gc" aria-describedby="aria-top" data-on-click="$filter == 'top' ? $filter = 'all' : $filter = 'top'" data-attr-selected="$filter == 'top'">
+            <div class="gz gc" aria-describedby="aria-top" data-on:click="$filter == 'top' ? $filter = 'all' : $filter = 'top'" data-attr:selected="$filter == 'top'">
                 <img alt="top" src="/static/img/top.webp">
                 <div id=aria-top role="tooltip">Top</div>
             </div>
-            <div class="gz gc" aria-describedby="aria-jungle" data-on-click="$filter == 'jun' ? $filter = 'all' : $filter = 'jun'" data-attr-selected="$filter == 'jun'">
+            <div class="gz gc" aria-describedby="aria-jungle" data-on:click="$filter == 'jun' ? $filter = 'all' : $filter = 'jun'" data-attr:selected="$filter == 'jun'">
                 <img alt="jungle" src="/static/img/jungle.webp">
                 <div id=aria-jungle role="tooltip">Jungle</div>
             </div>
-            <div class="gz gc" aria-describedby="aria-mid" data-on-click="$filter == 'mid' ? $filter = 'all' : $filter = 'mid'" data-attr-selected="$filter == 'mid'">
+            <div class="gz gc" aria-describedby="aria-mid" data-on:click="$filter == 'mid' ? $filter = 'all' : $filter = 'mid'" data-attr:selected="$filter == 'mid'">
                 <img alt="mid" src="/static/img/mid.webp">
                 <div id=aria-mid role="tooltip">Mid</div>
             </div>
-            <div class="gz gc" aria-describedby="aria-adc" data-on-click="$filter == 'adc' ? $filter = 'all' : $filter = 'adc'" data-attr-selected="$filter == 'adc'">
+            <div class="gz gc" aria-describedby="aria-adc" data-on:click="$filter == 'adc' ? $filter = 'all' : $filter = 'adc'" data-attr:selected="$filter == 'adc'">
                 <img alt="adc" src="/static/img/adc.webp">
                 <div id=aria-adc role="tooltip">ADC</div>
             </div>
-            <div class="gz gc" aria-describedby="aria-supp" data-on-click="$filter == 'sup' ? $filter = 'all' : $filter = 'sup'" data-attr-selected="$filter == 'sup'">
+            <div class="gz gc" aria-describedby="aria-supp" data-on:click="$filter == 'sup' ? $filter = 'all' : $filter = 'sup'" data-attr:selected="$filter == 'sup'">
                 <img alt="supp" src="/static/img/supp.webp">
                 <div id=aria-supp role="tooltip">Support</div>
             </div>
             <div></div>
-            <input data-bind-search type="text" placeholder="Search"></input>
+            <input data-bind:search type="text" placeholder="Search"></input>
         </div>
-        <div id="legends" 
-        {f'''data-on-click="@post('/d/{draft.id}?pick=' + event.target.id)"''' if not alert else ""}
+        <div id="legends"
+        {f'''data-on:click="@post('/d/{draft.id}?pick=' + event.target.id)"''' if not alert else ""}
         >
             {"".join(
                 [
                     f'''
-                    <div 
-                    id="{key}" 
+                    <div
+                    id="{key}"
                     data-sheet={champ['sheet']}
                     data-champion="{champ['name']}"
                     {"banned" if key in all_champs else ""}
-                    data-show="($filter == 'all' || $filter == {'|| $filter == '.join(f"'{role}'" for role in champ['role'])}) 
+                    data-show="($filter == 'all' || $filter == {'|| $filter == '.join(f"'{role}'" for role in champ['role'])})
                     && ($search == '' || '{champ['name']}'.toLowerCase().includes($search.toLowerCase()))"
                     aria-describedby="aria-{champ['name']}"
                     >'''

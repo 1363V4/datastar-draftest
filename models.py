@@ -1,12 +1,13 @@
 from peewee import Model, AutoField, SmallIntegerField, UUIDField, DateTimeField
 from datetime import datetime
 
+
 class Draft(Model):
-    id = AutoField(primary_key=True)
+    id = AutoField(primary_key=True) # not necessary btw
     created = DateTimeField(default=datetime.now)
     blue = UUIDField()
     red = UUIDField(null=True)
-    
+
     current_move = SmallIntegerField(default=0)
     r1b = SmallIntegerField(null=True)
     b1b = SmallIntegerField(null=True)
@@ -31,3 +32,7 @@ class Draft(Model):
 
     votes_blue = SmallIntegerField(default=1)
     votes_red = SmallIntegerField(default=1)
+
+class Vote(Model):
+    user_id = UUIDField()
+    draft_id = SmallIntegerField()

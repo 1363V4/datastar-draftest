@@ -1,7 +1,7 @@
 @import url("gold.css") layer(gold);
 @import url("champions.css") layer(champions);
 
-@import url('https://fonts.googleapis.com/css2?family=Quintessential&family=Skranji:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Quintessential&family=Skranji:wght@400;700&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&family=Tilt+Prism&family=VT323&family=Workbench&display=swap');
 
 :root {
     --bibi-black: #101111;
@@ -19,7 +19,8 @@
 }
 
 body {
-    font-family: 'Quintessential';
+    font-family: 'VT323';
+    font-size: 120%;
     background: var(--bibi-black);
     color: var(--blue-text);
     min-height: 100dvh;
@@ -32,14 +33,13 @@ h1, p {
 }
 
 h1, #instructions {
-    font-family: 'Skranji';
+    font-family: 'Tilt Prism';
     width: 100%;
     text-align: center;
 }
 
 p {
     background: none;
-    font-family: 'Quintessential';
 }
 
 #instructions.blue-instruction {
@@ -83,7 +83,6 @@ article .ratio {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.7rem;
     font-weight: bold;
     color: white;
 }
@@ -195,7 +194,9 @@ article .picks, .ban-wrapper {
     scrollbar-width: thin;
     scrollbar-color: currentColor transparent;
     scrollbar-gutter: stable;
-    div:not([banned]) {
+    pointer-events: none;
+    [data-champion]:not([banned]) {
+    	pointer-events: all;
         cursor: pointer;
         &:hover {filter: drop-shadow(2px 2px 4px var(--yellow-border))}
     }
@@ -267,4 +268,4 @@ article .picks, .ban-wrapper {
     100% {
     border-color: var(--yellow-border) var(--yellow-border) var(--yellow-border) var(--yellow-border);
     }
-} 
+}
