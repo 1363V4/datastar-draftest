@@ -95,7 +95,23 @@ article .picks, .ban-wrapper {
     img {
         width: 2rem;
         background: var(--yellow-border);
+        border-radius: 6px;
     }
+}
+
+@media (width <= 500px) {
+	article .picks {
+		grid-template-columns: repeat(5, 1fr);
+		img {
+			grid-column: -1/1
+		}
+	}
+	article .ban-wrapper {
+		grid-template-columns: repeat(5, 1fr)
+	}
+	.spacer {
+		display: none
+	}
 }
 
 .bans {
@@ -201,6 +217,16 @@ article .picks, .ban-wrapper {
         &:hover {filter: drop-shadow(2px 2px 4px var(--yellow-border))}
     }
 }
+
+@media (width <= 500px) {
+	#wrapper {
+		grid-template-rows: repeat(3, 1fr);
+	}
+	#legends {
+	    grid-template-columns: repeat(7, 1fr);
+	}
+}
+
 
 #legends::-webkit-scrollbar {
     width: 6px;

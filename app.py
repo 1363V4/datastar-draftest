@@ -14,18 +14,13 @@ from models import Draft, Vote
 from move_order import move_order
 
 
-# HMMMMM
-# leaky_q = asyncio.Queue()
-# LEAKY_OUT = 5
-# LEAKY_EVERY = 0.01
-
 app = Sanic(__name__)
 app.static('/static/', './static/')
 app.static('/', './index.html', name="index")
 
 app.update_config({'RESPONSE_TIMEOUT': 60*10})
 
-logging.basicConfig(filename='perso.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='perso.log', encoding='utf-8', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -48,6 +43,11 @@ async def cookie(request, response):
     if request.path == "/" and not request.cookies.get("user_id"):
         user_id = uuid4().hex
         response.add_cookie('user_id', user_id)
+
+@app.exception(Exception)
+async def handle_exception(request, exception):
+    logger.error(f"Unhandled exception: {exception}", exc_info=True)
+    return redirect("/")
 
 @app.get("/home_updates")
 @datastar_response
@@ -85,6 +85,15 @@ async def new_draft(request, mode):
 
 @app.get("/d/<draft_id>")
 async def draft(request, draft_id):
+    try:
+        draft_id = int(draft_id)
+    except (ValueError, TypeError):
+        return redirect("/")
+
+    draft = Draft.get_or_none(Draft.id == draft_id)
+    if not draft:
+        return redirect("/")
+
     response = html(f'''
 <!DOCTYPE html>
 <html lang="en">
@@ -111,7 +120,6 @@ async def draft(request, draft_id):
         user_id = uuid4().hex
         response.add_cookie('user_id', user_id)
 
-        draft = Draft.get(Draft.id == draft_id)
         draft.red = user_id
         draft.save()
         await app.ctx.redis_client.publish(f"draft:{draft_id}", "faker")
@@ -121,6 +129,15 @@ async def draft(request, draft_id):
 @app.get("/d/<draft_id>/draft_updates")
 @datastar_response
 async def draft_updates(request, draft_id):
+    try:
+        draft_id = int(draft_id)
+    except (ValueError, TypeError):
+        return
+    draft = Draft.get_or_none(Draft.id == draft_id)
+    if not draft:
+        yield SSE.patch_elements('<div id="drafts"><p>Draft not found</p></div>')
+        return
+
     user_id = request.cookies.get('user_id')
     pubsub = app.ctx.redis_client.pubsub()
     channel = f"draft:{draft_id}"
@@ -138,13 +155,18 @@ async def draft_updates(request, draft_id):
 @app.post("/d/<draft_id>")
 @datastar_response
 async def da_post_route(request, draft_id):
+    try:
+        draft_id = int(draft_id)
+    except (ValueError, TypeError):
+        return
+
+    draft = Draft.get_or_none(Draft.id == draft_id)
+    if not draft:
+        return
+
     vote = request.args.get("vote")
     champ = request.args.get("pick")
     user_id = request.cookies.get('user_id')
-    draft = Draft.get(Draft.id == draft_id)
-
-    if user_id not in [str(draft.blue).replace("-", ""), str(draft.red).replace("-", "") if draft.red else None]:
-        return
 
     match vote, champ:
         case "blue", None:
@@ -158,8 +180,18 @@ async def da_post_route(request, draft_id):
             draft.save()
             await app.ctx.redis_client.publish("main", "rugpull")
         case None, _:
+            try:
+                champ = int(champ)
+                if not (0 <= champ <= 169):
+                    return
+            except (ValueError, TypeError):
+                return
             if draft.current_move == 20:
                 return
+            normalized_user_id = user_id.replace("-", "")
+            if normalized_user_id not in [str(draft.blue).replace("-", ""), str(draft.red).replace("-", "") if draft.red else None]:
+                return
+
             key = move_order.get(draft.current_move)
             setattr(draft, key, champ)
             draft.current_move += 1

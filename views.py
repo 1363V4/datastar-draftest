@@ -3,7 +3,7 @@ from models import Draft, Vote
 
 
 async def home_page(user_id):
-    drafts = Draft.select()
+    drafts = Draft.select().order_by(Draft.created.desc())
     votes = Vote.select().where(Vote.user_id == user_id)
     user_voted = [vote.draft_id for vote in list(votes)]
     drafts_html = []
@@ -41,7 +41,7 @@ async def home_page(user_id):
                     <div data-sheet={champs[draft.b3b]['sheet']} data-champion="{champs[draft.b3b]['name']}"></div>
                     <div data-sheet={champs[draft.b4b]['sheet']} data-champion="{champs[draft.b4b]['name']}"></div>
                     <div data-sheet={champs[draft.b5b]['sheet']} data-champion="{champs[draft.b5b]['name']}"></div>
-                    <div></div>
+                    <div class="spacer"></div>
                     <div data-sheet={champs[draft.r5b]['sheet']} data-champion="{champs[draft.r5b]['name']}"></div>
                     <div data-sheet={champs[draft.r4b]['sheet']} data-champion="{champs[draft.r4b]['name']}"></div>
                     <div data-sheet={champs[draft.r3b]['sheet']} data-champion="{champs[draft.r3b]['name']}"></div>
