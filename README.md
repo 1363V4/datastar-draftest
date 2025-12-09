@@ -12,6 +12,11 @@ V6?
 Vote put & new table?
 19H15/30
 
+# Changer un champion
+update le spritesheet
+update champs.py
+update champions.css
+
 # Notes
 bottleneck for now seems to be redis pubsub
 we do shell+stream 2 times for easier pubsub deco/reco
